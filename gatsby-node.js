@@ -1,3 +1,5 @@
+const pdf2png = require('pdf-to-png')
+
 const { createFilePath } = require('gatsby-source-filesystem')
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
@@ -140,17 +142,40 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         },
       })
     })
-}
 
-exports.onCreateNode = ({ node, actions, getNode }) => {
-  const { createNodeField } = actions
+  // generate thumbnails of PDF files
+  const allPdfQuery = await graphql(`{
+    allFile(filter: {ext: {}, extension: {eq: "pdf"}}) {
+      edges {
+        node {
+          id
+          base
+          absolutePath
+        }
+      }
+    }
+  }`)
+  console.log(allPdfQuery.data.allFile)
 
-  if (node.internal.type === `MarkdownRemark`) {
-    const value = createFilePath({ node, getNode })
-    createNodeField({
-      name: `slug`,
-      node,
-      value,
+  allPdfQuery.data.allFile.edges
+    .forEach(item => {
+      console.log(item.node.absolutePath)
+      // pdf2png({
+      //   input: item.node.absolutePath,
+      //   output: item.node.absolutePath + '.png'
+      // })
     })
+
+  exports.onCreateNode = ({ node, actions, getNode }) => {
+    const { createNodeField } = actions
+
+    if (node.internal.type === `MarkdownRemark`) {
+      const value = createFilePath({ node, getNode })
+      createNodeField({
+        name: `slug`,
+        node,
+        value,
+      })
+    }
   }
 }
