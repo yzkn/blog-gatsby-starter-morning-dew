@@ -1,4 +1,4 @@
-const pdf2png = require('pdf-to-png')
+let PDFImage = require("pdf-image").PDFImage;
 
 const { createFilePath } = require('gatsby-source-filesystem')
 
@@ -159,11 +159,21 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   allPdfQuery.data.allFile.edges
     .forEach(item => {
+      console.log(item.node.base)
       console.log(item.node.absolutePath)
-      // pdf2png({
-      //   input: item.node.absolutePath,
-      //   output: item.node.absolutePath + '.png'
-      // })
+      var pdfImage = new PDFImage(item.node.absolutePath, {
+        convertOptions: {
+          "-pointsize": 20,
+          "-gravity": "NorthWest",
+          "-font": "Times-Roman",
+          "-annotate": "0 '" + item.node.base + "'",
+          "-fill": "black",
+          "-quality": "100"
+        }
+      });
+      pdfImage.convertPage(0).then(function (imagePath) {
+        console.log(imagePath)
+      });
     })
 
   exports.onCreateNode = ({ node, actions, getNode }) => {
