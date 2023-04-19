@@ -34,7 +34,7 @@
     "generatePostPreviewImages": "./scripts/generatePostPreviewImages.js"
   },
   "dependencies": {
-    "@mdx-js/mdx": "^1.5.9",
+    "@mdx-js/mdx": "^2.3.0",
     "@mdx-js/react": "^1.5.9",
     "babel-plugin-styled-components": "^1.10.6",
     "disqus-react": "^1.0.8",
