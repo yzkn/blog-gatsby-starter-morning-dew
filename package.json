@@ -70,7 +70,7 @@
     "prettier": "^2.0.5",
     "puppeteer": "^1.17.0",
     "semantic-release": "^19.0.3",
-    "yaml": "^1.6.0"
+    "yaml": "^2.2.2"
   },
   "peerDependencies": {
     "gatsby": "^2.20.0",
